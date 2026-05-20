@@ -12,7 +12,7 @@ import java.util.function.Function;
 public class JwtService {
 
     private static final String SECRET_KEY =
-            "mysecretkeymysecretkeymysecretkey12345";
+            "myverysecuresecretkeymyverysecuresecretkey123456789";
 
     // Generate JWT Token
     public String generateToken(String username) {
