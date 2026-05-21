@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useState } from "react";
 
 import {
     useDispatch,
@@ -22,6 +23,9 @@ function Dashboard() {
     const dispatch =
         useDispatch();
 
+    const [search,
+        setSearch] =
+        useState("");
     const {
         products,
         loading,
@@ -29,6 +33,15 @@ function Dashboard() {
     } = useSelector(
         (state) => state.product
     );
+    const filteredProducts =
+        products.filter(product =>
+
+            product.name
+                .toLowerCase()
+                .includes(
+                    search.toLowerCase()
+                )
+        );
 
     useEffect(() => {
 
@@ -55,9 +68,17 @@ function Dashboard() {
             <div className="container mt-5">
 
                 <h2>Product Dashboard</h2>
+                <input
+                    type="text"
+                    placeholder="Search Product"
+                    className="form-control mb-4"
+                    value={search}
+                    onChange={(e) =>
+                        setSearch(e.target.value)}
+                />
 
                 {
-                    products.map(product => (
+                    filteredProducts.map(product =>(
 
                         <div
                             key={product.id}
