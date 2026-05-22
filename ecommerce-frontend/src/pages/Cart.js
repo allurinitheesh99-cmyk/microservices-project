@@ -5,7 +5,8 @@ import {
     from "react-redux";
 
 import {
-    removeFromCart
+    removeFromCart,
+    clearCart
 }
     from "../features/cartSlice";
 
@@ -22,6 +23,17 @@ function Cart() {
     } = useSelector(
         (state) => state.cart
     );
+
+    const totalPrice =
+
+        cartItems.reduce(
+
+            (total, item) =>
+
+                total + item.price,
+
+            0
+        );
 
     return (
 
@@ -82,6 +94,43 @@ function Cart() {
 
                         </div>
                     ))
+                }
+
+                {
+                    cartItems.length > 0 && (
+
+                        <div className="mt-4">
+
+                            <h3>
+
+                                Total:
+                                ${totalPrice}
+
+                            </h3>
+
+                            <button
+
+                                className=
+                                    "btn btn-primary"
+
+                                onClick={() => {
+
+                                    alert(
+                                        "Order Placed Successfully"
+                                    );
+
+                                    dispatch(
+                                        clearCart()
+                                    );
+                                }}
+                            >
+
+                                Checkout
+
+                            </button>
+
+                        </div>
+                    )
                 }
 
             </div>

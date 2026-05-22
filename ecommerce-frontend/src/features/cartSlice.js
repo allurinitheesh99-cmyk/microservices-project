@@ -39,6 +39,11 @@ const cartSlice =
                             item.id !==
                             action.payload
                     );
+            },
+
+            clearCart: (state) => {
+
+                state.cartItems = [];
             }
         }
     });
@@ -46,8 +51,8 @@ const cartSlice =
 export const {
 
     addToCart,
-    removeFromCart
-
+    removeFromCart,
+    clearCart
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
