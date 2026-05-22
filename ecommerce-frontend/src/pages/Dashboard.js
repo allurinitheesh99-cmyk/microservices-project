@@ -1,93 +1,50 @@
-import {
-    useEffect,
-    useState,
-    useMemo
-}
-    from "react";
+import ClipLoader
+    from "react-spinners/ClipLoader";
 
 import {
-    useDispatch,
-    useSelector
+    useDispatch
 }
     from "react-redux";
 
 import {
-    fetchProducts,
     deleteProduct,
     updateProduct
 }
     from "../features/productSlice";
-
-import Navbar
-    from "../components/Navbar";
-
-import ClipLoader
-    from "react-spinners/ClipLoader";
 
 import {
     addToCart
 }
     from "../features/cartSlice";
 
+import Navbar
+    from "../components/Navbar";
+
+import useProducts
+    from "../hooks/useProducts";
+
 function Dashboard() {
 
     const dispatch =
         useDispatch();
 
-    const [search,
-        setSearch] =
-        useState("");
-
-    const [currentPage,
-        setCurrentPage] =
-        useState(1);
-
-    const productsPerPage = 2;
-
     const {
-        products,
+
+        search,
+        setSearch,
+
+        currentPage,
+        setCurrentPage,
+
+        productsPerPage,
+
+        filteredProducts,
+        currentProducts,
+
         loading,
         error
-    } = useSelector(
-        (state) => state.product
-    );
 
-    useEffect(() => {
-
-        dispatch(fetchProducts());
-
-    }, [dispatch]);
-
-    const filteredProducts =
-        useMemo(() => {
-
-            return products.filter(
-                product =>
-
-                    product.name
-                        .toLowerCase()
-                        .includes(
-                            search.toLowerCase()
-                        )
-            );
-
-        }, [products, search]);
-
-    const indexOfLastProduct =
-        currentPage *
-        productsPerPage;
-
-    const indexOfFirstProduct =
-        indexOfLastProduct -
-        productsPerPage;
-
-    const currentProducts =
-        filteredProducts.slice(
-
-            indexOfFirstProduct,
-
-            indexOfLastProduct
-        );
+    } = useProducts();
 
     if (loading) {
 
@@ -136,7 +93,10 @@ function Dashboard() {
 
                 <input
                     type="text"
-                    placeholder="Search Product"
+
+                    placeholder=
+                        "Search Product"
+
                     className=
                         "form-control mb-4"
 
@@ -155,6 +115,7 @@ function Dashboard() {
 
                             <div
                                 key={product.id}
+
                                 className=
                                     "card p-3 mb-3"
                             >
