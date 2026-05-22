@@ -22,16 +22,16 @@ function Navbar() {
 
         <nav
             className=
-                "navbar navbar-dark bg-dark px-3"
+                "navbar navbar-dark bg-dark px-4"
         >
 
-            <h3 className="text-white">
+            <h2 className="text-white">
 
                 Ecommerce App
 
-            </h3>
+            </h2>
 
-            <div>
+            <div className="d-flex">
 
                 <Link
                     to="/dashboard"
@@ -53,10 +53,23 @@ function Navbar() {
 
                 </Link>
 
+                <Link
+                    to="/cart"
+                    className=
+                        "btn btn-success me-2"
+                >
+
+                    Cart
+
+                </Link>
+
                 <button
                     className=
                         "btn btn-danger"
-                    onClick={handleLogout}
+
+                    onClick={
+                        handleLogout
+                    }
                 >
 
                     Logout

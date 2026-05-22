@@ -23,6 +23,11 @@ import Navbar
 import ClipLoader
     from "react-spinners/ClipLoader";
 
+import {
+    addToCart
+}
+    from "../features/cartSlice";
+
 function Dashboard() {
 
     const dispatch =
@@ -162,75 +167,94 @@ function Dashboard() {
                                     {product.stock}
                                 </p>
 
-                                <button
-                                    className=
-                                        "btn btn-danger"
+                                <div className="mt-3">
 
-                                    onClick={() =>
-                                        dispatch(
-                                            deleteProduct(
-                                                product.id
+                                    <button
+                                        className=
+                                            "btn btn-danger me-2"
+
+                                        onClick={() =>
+                                            dispatch(
+                                                deleteProduct(
+                                                    product.id
+                                                )
                                             )
-                                        )
-                                    }
-                                >
+                                        }
+                                    >
 
-                                    Delete
+                                        Delete
 
-                                </button>
+                                    </button>
 
-                                <button
-                                    className=
-                                        "btn btn-warning ms-2"
+                                    <button
+                                        className=
+                                            "btn btn-warning me-2"
 
-                                    onClick={() => {
+                                        onClick={() => {
 
-                                        const updatedName =
-                                            prompt(
-                                                "Enter Product Name",
-                                                product.name
+                                            const updatedName =
+                                                prompt(
+                                                    "Enter Product Name",
+                                                    product.name
+                                                );
+
+                                            const updatedPrice =
+                                                prompt(
+                                                    "Enter Price",
+                                                    product.price
+                                                );
+
+                                            const updatedStock =
+                                                prompt(
+                                                    "Enter Stock",
+                                                    product.stock
+                                                );
+
+                                            const updatedProduct = {
+
+                                                name:
+                                                updatedName,
+
+                                                price:
+                                                updatedPrice,
+
+                                                stock:
+                                                updatedStock
+                                            };
+
+                                            dispatch(
+                                                updateProduct({
+
+                                                    id:
+                                                    product.id,
+
+                                                    product:
+                                                    updatedProduct
+                                                })
                                             );
+                                        }}
+                                    >
 
-                                        const updatedPrice =
-                                            prompt(
-                                                "Enter Price",
-                                                product.price
-                                            );
+                                        Edit
 
-                                        const updatedStock =
-                                            prompt(
-                                                "Enter Stock",
-                                                product.stock
-                                            );
+                                    </button>
 
-                                        const updatedProduct = {
+                                    <button
+                                        className=
+                                            "btn btn-success"
 
-                                            name:
-                                            updatedName,
+                                        onClick={() =>
+                                            dispatch(
+                                                addToCart(product)
+                                            )
+                                        }
+                                    >
 
-                                            price:
-                                            updatedPrice,
+                                        Add To Cart
 
-                                            stock:
-                                            updatedStock
-                                        };
+                                    </button>
 
-                                        dispatch(
-                                            updateProduct({
-
-                                                id:
-                                                product.id,
-
-                                                product:
-                                                updatedProduct
-                                            })
-                                        );
-                                    }}
-                                >
-
-                                    Edit
-
-                                </button>
+                                </div>
 
                             </div>
                         ))

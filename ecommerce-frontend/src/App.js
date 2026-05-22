@@ -17,6 +17,9 @@ import AddProduct
 import ProtectedRoute
     from "./components/ProtectedRoute";
 
+import Cart
+    from "./pages/Cart";
+
 function App() {
 
     return (
@@ -55,6 +58,20 @@ function App() {
                         </ProtectedRoute>
                     }
                 />
+
+                <Route
+                    path="/cart"
+
+                    element={
+
+                        <ProtectedRoute>
+
+                            <Cart />
+
+                        </ProtectedRoute>
+                    }
+                />
+
             </Routes>
 
         </BrowserRouter>
