@@ -20,6 +20,9 @@ import {
 import Navbar
     from "../components/Navbar";
 
+import ClipLoader
+    from "react-spinners/ClipLoader";
+
 function Dashboard() {
 
     const dispatch =
@@ -77,12 +80,35 @@ function Dashboard() {
 
     if (loading) {
 
-        return <h2>Loading...</h2>;
+        return (
+
+            <div
+                className=
+                    "d-flex justify-content-center mt-5"
+            >
+
+                <ClipLoader
+                    size={60}
+                />
+
+            </div>
+        );
     }
 
     if (error) {
 
-        return <h2>Error: {error}</h2>;
+        return (
+
+            <div
+                className=
+                    "alert alert-danger mt-5"
+            >
+
+                Error:
+                {error}
+
+            </div>
+        );
     }
 
     return (
