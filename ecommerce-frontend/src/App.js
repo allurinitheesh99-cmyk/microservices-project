@@ -14,6 +14,9 @@ import Dashboard
 import AddProduct
     from "./pages/AddProduct";
 
+import ProtectedRoute
+    from "./components/ProtectedRoute";
+
 function App() {
 
     return (
@@ -29,14 +32,29 @@ function App() {
 
                 <Route
                     path="/dashboard"
-                    element={<Dashboard />}
+
+                    element={
+
+                        <ProtectedRoute>
+
+                            <Dashboard />
+
+                        </ProtectedRoute>
+                    }
                 />
 
                 <Route
                     path="/add-product"
-                    element={<AddProduct />}
-                />
 
+                    element={
+
+                        <ProtectedRoute>
+
+                            <AddProduct />
+
+                        </ProtectedRoute>
+                    }
+                />
             </Routes>
 
         </BrowserRouter>
