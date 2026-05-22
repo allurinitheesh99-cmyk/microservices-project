@@ -1,7 +1,10 @@
 package com.microservices.productservice.service;
 
 import com.microservices.productservice.entity.Product;
+import java.util.stream.Collectors;
 import com.microservices.productservice.repository.ProductRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,16 +19,29 @@ import java.util.Optional;
 @Service
 public class ProductService {
 
-    private final ProductRepository productRepository;
-
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+    @Autowired
+    private ProductRepository productRepository;
 
     // GET ALL PRODUCTS
     public List<Product> getAllProducts() {
 
         return productRepository.findAll();
+    }
+    public List<Product>
+    getProductsByPrice(
+            double price
+    ) {
+
+        return productRepository
+                .findProductsGreaterThanPrice(
+                        price
+                );
+    }
+
+    // GET PRODUCT BY ID
+    public Optional<Product> getProductById(Long id) {
+
+        return productRepository.findById(id);
     }
 
     // ADD PRODUCT
@@ -34,95 +50,76 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    // GET PRODUCT BY ID
-    public Product getProductById(int id) {
-
-        Optional<Product> product =
-                productRepository.findById(id);
-
-        return product.orElse(null);
-    }
-
     // UPDATE PRODUCT
-    public Product updateProduct(int id,
-                                 Product updatedProduct) {
+    public Product updateProduct(
 
-        Optional<Product> optionalProduct =
-                productRepository.findById(id);
+            Long id,
+            Product updatedProduct
+    ) {
 
-        if (optionalProduct.isPresent()) {
+        Product product =
+                productRepository.findById(id)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Product Not Found"
+                                ));
 
-            Product product = optionalProduct.get();
+        product.setName(
+                updatedProduct.getName()
+        );
 
-            product.setName(updatedProduct.getName());
-            product.setPrice(updatedProduct.getPrice());
-            product.setStock(updatedProduct.getStock());
+        product.setPrice(
+                updatedProduct.getPrice()
+        );
 
-            return productRepository.save(product);
-        }
+        product.setStock(
+                updatedProduct.getStock()
+        );
 
-        return null;
+        return productRepository.save(product);
     }
 
     // DELETE PRODUCT
-    public String deleteProduct(int id) {
+    public void deleteProduct(Long id) {
 
         productRepository.deleteById(id);
-
-        return "Product deleted successfully";
     }
 
     // PAGINATION + SORTING
-    public Page<Product> getProductsWithPagination(
+    public Page<Product> getProductsPaginated(
+
             int page,
             int size,
-            String sortBy) {
+            String sortBy
+    ) {
 
         Pageable pageable =
-                PageRequest.of(page,
+
+                PageRequest.of(
+
+                        page,
                         size,
-                        Sort.by(sortBy));
 
-        return productRepository.findAll(pageable);
-    }
-
-    // JAVA STREAM FILTER
-    public List<Product> getExpensiveProducts(double price) {
-
-        return productRepository.findAll()
-                .stream()
-                .filter(product ->
-                        product.getPrice() > price)
-                .toList();
-    }
-
-    // NATIVE QUERY
-    public List<Product> getProductsAbovePrice(
-            double price) {
+                        Sort.by(sortBy)
+                );
 
         return productRepository
-                .getProductsAbovePrice(price);
+                .findAll(pageable);
     }
+    public List<Product> getProductsGreaterThanPrice(
+            double price
+    ) {
 
-    // REDUCE STOCK
-    public Product reduceStock(int id,
-                               int quantity) {
+        List<Product> products =
+                productRepository.findAll();
 
-        Optional<Product> optionalProduct =
-                productRepository.findById(id);
+        return products.stream()
 
-        if (optionalProduct.isPresent()) {
+                .filter(product ->
 
-            Product product = optionalProduct.get();
+                        product.getPrice() > price
+                )
 
-            int updatedStock =
-                    product.getStock() - quantity;
-
-            product.setStock(updatedStock);
-
-            return productRepository.save(product);
-        }
-
-        return null;
+                .collect(Collectors.toList());
     }
 }

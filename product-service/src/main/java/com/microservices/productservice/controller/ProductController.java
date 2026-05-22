@@ -1,105 +1,134 @@
 package com.microservices.productservice.controller;
 
 import com.microservices.productservice.entity.Product;
+
 import com.microservices.productservice.service.ProductService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.validation.Valid;
-
 import org.springframework.data.domain.Page;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
+
+@RequestMapping("/products")
+
+@CrossOrigin(origins = "http://localhost:3000")
+
 public class ProductController {
 
-    private final ProductService productService;
-
-    public ProductController(
-            ProductService productService) {
-
-        this.productService = productService;
-    }
+    @Autowired
+    private ProductService productService;
 
     // GET ALL PRODUCTS
-    @GetMapping("/products")
+    @GetMapping
+
     public List<Product> getAllProducts() {
 
-        return productService.getAllProducts();
-    }
-
-    // ADD PRODUCT
-    @PostMapping("/products")
-    public Product addProduct(
-            @Valid @RequestBody Product product) {
-
-        return productService.addProduct(product);
+        return productService
+                .getAllProducts();
     }
 
     // GET PRODUCT BY ID
-    @GetMapping("/products/{id}")
-    public Product getProductById(
-            @PathVariable int id) {
+    @GetMapping("/{id}")
 
-        return productService.getProductById(id);
+    public Optional<Product> getProductById(
+
+            @PathVariable Long id
+    ) {
+
+        return productService
+                .getProductById(id);
+    }
+
+    // ADD PRODUCT
+    @PostMapping
+
+    public Product addProduct(
+
+            @Valid @RequestBody Product product
+    ) {
+
+        return productService
+                .addProduct(product);
     }
 
     // UPDATE PRODUCT
-    @PutMapping("/products/{id}")
-    public Product updateProduct(
-            @PathVariable int id,
-            @RequestBody Product product) {
+    @PutMapping("/{id}")
 
-        return productService.updateProduct(id, product);
+    public Product updateProduct(
+
+            @PathVariable Long id,
+
+            @Valid @RequestBody Product product
+    ) {
+
+        return productService
+                .updateProduct(
+                        id,
+                        product
+                );
     }
 
     // DELETE PRODUCT
-    @DeleteMapping("/products/{id}")
-    public String deleteProduct(
-            @PathVariable int id) {
+    @DeleteMapping("/{id}")
 
-        return productService.deleteProduct(id);
+    public void deleteProduct(
+
+            @PathVariable Long id
+    ) {
+
+        productService.deleteProduct(id);
     }
 
     // PAGINATION + SORTING
-    @GetMapping("/products/pagination")
-    public Page<Product> getProductsWithPagination(
+    @GetMapping("/paginated")
+
+    public Page<Product> getProductsPaginated(
+
             @RequestParam int page,
+
             @RequestParam int size,
-            @RequestParam String sortBy) {
+
+            @RequestParam String sortBy
+    ) {
 
         return productService
-                .getProductsWithPagination(
+                .getProductsPaginated(
+
                         page,
                         size,
-                        sortBy);
+                        sortBy
+                );
     }
+    @GetMapping("/filter/{price}")
 
-    // JAVA STREAM FILTER
-    @GetMapping("/products/expensive")
-    public List<Product> getExpensiveProducts(
-            @RequestParam double price) {
+    public List<Product>
+    getProductsGreaterThanPrice(
+
+            @PathVariable double price
+    ) {
 
         return productService
-                .getExpensiveProducts(price);
+                .getProductsGreaterThanPrice(
+                        price
+                );
     }
+    @GetMapping("/price/{price}")
 
-    // NATIVE QUERY
-    @GetMapping("/products/native")
-    public List<Product> getProductsAbovePrice(
-            @RequestParam double price) {
+    public List<Product>
+    getProductsByPrice(
+
+            @PathVariable double price
+    ) {
 
         return productService
-                .getProductsAbovePrice(price);
-    }
-
-    // REDUCE STOCK
-    @PutMapping("/products/{id}/reduce")
-    public Product reduceStock(
-            @PathVariable int id,
-            @RequestParam int quantity) {
-
-        return productService
-                .reduceStock(id, quantity);
+                .getProductsByPrice(
+                        price
+                );
     }
 }

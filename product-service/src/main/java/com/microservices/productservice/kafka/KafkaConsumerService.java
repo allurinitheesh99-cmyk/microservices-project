@@ -45,8 +45,8 @@ public class KafkaConsumerService {
         // EXTRACT PRODUCT ID
         String[] parts = message.split(",");
 
-        int productId =
-                Integer.parseInt(
+        Long productId=
+                Long.parseLong(
                         parts[0]
                                 .split(":")[1]
                                 .trim());

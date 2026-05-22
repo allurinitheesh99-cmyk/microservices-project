@@ -1,4 +1,6 @@
 package com.microservices.productservice.entity;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,14 +18,13 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotBlank(message = "Name cannot be empty")
+    @NotBlank(message = "Product name is required")
     private String name;
 
-    @Positive(message = "Price must be positive")
+    @Positive(message = "Price must be greater than 0")
     private double price;
 
-    @Min(value = 0,
-            message = "Stock cannot be negative")
+    @Positive(message = "Stock must be greater than 0")
     private int stock;
 
     // GETTERS AND SETTERS

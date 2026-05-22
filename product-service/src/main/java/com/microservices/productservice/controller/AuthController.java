@@ -4,6 +4,7 @@ import com.microservices.productservice.dto.AuthRequest;
 import com.microservices.productservice.security.JwtService;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
