@@ -1,6 +1,7 @@
 import {
     useEffect,
-    useState
+    useState,
+    useMemo
 }
     from "react";
 
@@ -58,14 +59,19 @@ function Dashboard() {
     }, [dispatch]);
 
     const filteredProducts =
-        products.filter(product =>
+        useMemo(() => {
 
-            product.name
-                .toLowerCase()
-                .includes(
-                    search.toLowerCase()
-                )
-        );
+            return products.filter(
+                product =>
+
+                    product.name
+                        .toLowerCase()
+                        .includes(
+                            search.toLowerCase()
+                        )
+            );
+
+        }, [products, search]);
 
     const indexOfLastProduct =
         currentPage *
