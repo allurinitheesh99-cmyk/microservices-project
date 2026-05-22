@@ -29,6 +29,12 @@ function Dashboard() {
         setSearch] =
         useState("");
 
+    const [currentPage,
+        setCurrentPage] =
+        useState(1);
+
+    const productsPerPage = 2;
+
     const {
         products,
         loading,
@@ -51,6 +57,22 @@ function Dashboard() {
                 .includes(
                     search.toLowerCase()
                 )
+        );
+
+    const indexOfLastProduct =
+        currentPage *
+        productsPerPage;
+
+    const indexOfFirstProduct =
+        indexOfLastProduct -
+        productsPerPage;
+
+    const currentProducts =
+        filteredProducts.slice(
+
+            indexOfFirstProduct,
+
+            indexOfLastProduct
         );
 
     if (loading) {
@@ -91,7 +113,7 @@ function Dashboard() {
                 />
 
                 {
-                    filteredProducts.map(
+                    currentProducts.map(
                         product => (
 
                             <div
@@ -187,6 +209,42 @@ function Dashboard() {
                             </div>
                         ))
                 }
+
+                <div className="mt-4">
+
+                    {
+                        Array.from({
+
+                            length: Math.ceil(
+
+                                filteredProducts.length
+                                /
+                                productsPerPage
+                            )
+
+                        }).map((_, index) => (
+
+                            <button
+
+                                key={index}
+
+                                className=
+                                    "btn btn-dark me-2"
+
+                                onClick={() =>
+                                    setCurrentPage(
+                                        index + 1
+                                    )
+                                }
+                            >
+
+                                {index + 1}
+
+                            </button>
+                        ))
+                    }
+
+                </div>
 
             </div>
 
